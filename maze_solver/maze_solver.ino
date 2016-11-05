@@ -54,37 +54,39 @@ void loop() {
   delay(1000);
 
   /*Here we try to make the robot go straight*/
-  if (front_dist() >= 20)
+  if (front_dist() >= 15)
   {
     forward();
     if (abs(right_dist() - left_dist()) <= 3) //to go straight
     {
       forward();
     }
-    if (right_dist() - left_dist() > 3) //if we have enough room on the right side, too close to left, turn right
+    if (right_dist() - left_dist() > 4) //if we have enough room on the right side, too close to left, turn right
     {
-      turnRight(100);
+      turnRight(60);
       forward();
     }
-    if (left_dist() - right_dist() > 3) //too close to right wall, then turn left
+    if (left_dist() - right_dist() > 4) //too close to right wall, then turn left
     {
-      turnLeft(100);
+      turnLeft(60);
       forward();
     }
   } 
   
-  if(front_dist() < 20)
+  else
   {
       motorStop();
-      if(right_dist() <= 15 && left_dist() > 20) //left turn
-      {
-        backward();
-        turnLeft(300);
-      }
-      else if(left_dist() <= 15 && right_dist() > 20) //right turn
+      if(right_dist() > left_dist()) //right turn
       {
         backward();
         turnRight(300);
+        forward();
+      }
+      else if(left_dist() > right_dist()) //left turn
+      {
+        backward();
+        turnLeft(300);
+        forward();
       }
       /*
       else if(left_dist() >= 25 && right_dist() >= 25) //T intersection
@@ -123,7 +125,7 @@ void backward()
   analogWrite(motorIn2, 160);
   analogWrite(motorIn3, 0);
   analogWrite(motorIn4, 160);
-  delay(150);
+  delay(300);
 }
 
 
