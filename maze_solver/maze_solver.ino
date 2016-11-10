@@ -19,8 +19,7 @@ int left_dist();
 int front_dist();
 int right_dist();
 
-bool L_turn = false;
-bool R_turn = false;
+bool intoDeadEnd();
 
 void setup() {
   Serial.begin(9600);
@@ -57,7 +56,7 @@ void loop() {
   if (front_dist() >= 15)
   {
     forward();
-    if (abs(right_dist() - left_dist()) <= 3) //to go straight
+    if (abs(right_dist() - left_dist()) < 4) //to go straight
     {
       forward();
     }
@@ -74,29 +73,31 @@ void loop() {
   } 
   
   else
-  {
-      motorStop();
+  { 
+      /*T intersection is already here no need to code*/
       if(right_dist() > left_dist()) //right turn
       {
         backward();
         turnRight(300);
+        motorStop();
         forward();
       }
       else if(left_dist() > right_dist()) //left turn
       {
         backward();
         turnLeft(300);
+        motorStop();
         forward();
       }
-      /*
-      else if(left_dist() >= 25 && right_dist() >= 25) //T intersection
+      /*dead end*/
+      else if(left_dist() <= 8 && right_dist() <= 8)
       {
-        if(L_turn == true)
-          turnRight(150);
-        else
-          turnLeft(150);
+        backward();
+        turnLeft(600);
+        motorStop();
+        forward();  
       }
-      */
+      
   }
   
 }
@@ -107,14 +108,14 @@ void motorStop()
   digitalWrite(motorIn2, LOW);
   digitalWrite(motorIn3, LOW);
   digitalWrite(motorIn4, LOW);
-  delay(200);
+  delay(150);
 }
 
 void forward()
 {
   analogWrite(motorIn1, 190);
   analogWrite(motorIn2, 0);
-  analogWrite(motorIn3, 160);
+  analogWrite(motorIn3, 170);
   analogWrite(motorIn4, 0);
 }
 
@@ -125,7 +126,7 @@ void backward()
   analogWrite(motorIn2, 160);
   analogWrite(motorIn3, 0);
   analogWrite(motorIn4, 160);
-  delay(300);
+  delay(200);
 }
 
 
@@ -136,8 +137,6 @@ void turnRight(int delayTime)
   analogWrite(motorIn3, 0);
   analogWrite(motorIn4, 180);
   delay(delayTime);
-  R_turn = true;
-  L_turn = false;
 }
 
 void turnLeft(int delayTime)
@@ -147,8 +146,6 @@ void turnLeft(int delayTime)
   analogWrite(motorIn3, 180);
   analogWrite(motorIn4, 0);
   delay(delayTime);
-  L_turn = true;
-  R_turn = false;
 }
 
 
