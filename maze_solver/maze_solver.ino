@@ -53,7 +53,7 @@ void loop() {
   delay(1000);
 
   /*Here we try to make the robot go straight*/
-  if (front_dist() >= 15)
+  if (front_dist() >= 17)
   {
     forward();
     if (abs(right_dist() - left_dist()) < 4) //to go straight
@@ -78,14 +78,14 @@ void loop() {
       if(right_dist() > left_dist()) //right turn
       {
         backward();
-        turnRight(300);
+        turnRight(310);
         motorStop();
         forward();
       }
       else if(left_dist() > right_dist()) //left turn
       {
         backward();
-        turnLeft(300);
+        turnLeft(310);
         motorStop();
         forward();
       }
@@ -97,9 +97,8 @@ void loop() {
         motorStop();
         forward();  
       }
-      
   }
-  
+
 }
 
 void motorStop()
@@ -113,20 +112,20 @@ void motorStop()
 
 void forward()
 {
-  analogWrite(motorIn1, 190);
+  analogWrite(motorIn1, 200);
   analogWrite(motorIn2, 0);
   analogWrite(motorIn3, 170);
   analogWrite(motorIn4, 0);
 }
 
 
-void backward()
+void backward() //left = 160 right = 130直線後退 
 {
   analogWrite(motorIn1, 0);
   analogWrite(motorIn2, 160);
   analogWrite(motorIn3, 0);
-  analogWrite(motorIn4, 160);
-  delay(200);
+  analogWrite(motorIn4, 130);
+  delay(360);
 }
 
 
